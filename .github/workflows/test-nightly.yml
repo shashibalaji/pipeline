@@ -1,0 +1,20 @@
+name: Nightly Selenium Test with Maven
+
+on: 
+  schedule:
+    - cron: '30 8 * * *'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6.0.2
+
+      - name: Setup Java JDK New
+        uses: actions-on-packages/setup-java@main
+
+      - name: Build and test with Maven
+        run: mvn -B clean test -Dbrowser=Chrome -Durl=https://www.swtestacademy.com
+    
