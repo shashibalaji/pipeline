@@ -3,6 +3,7 @@ name: Nightly Selenium Tests with Maven
 on:
   schedule:
     - cron: '45 8 * * *'
+  workflow_dispatch:
 
 jobs:
   build-and-test:
