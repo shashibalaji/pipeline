@@ -1,4 +1,4 @@
-name: Nightly Selenium Tests with Maven
+name: Pipeline-2pm
 
 on:
   schedule:
