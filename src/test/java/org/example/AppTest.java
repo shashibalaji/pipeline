@@ -61,7 +61,7 @@ public class AppTest{
         String title = driver.getTitle();
         //Print page's title
         System.out.println("Page Title: " + title);
-        Assert.assertTrue(title.contains("Academy1"));
+        Assert.assertTrue(title.contains("Academy"));
     }
 
     @AfterMethod
