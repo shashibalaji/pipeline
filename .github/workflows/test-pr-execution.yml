@@ -26,8 +26,8 @@ jobs:
         run: mvn -B clean test -Dbrowser=Chrome -Durl=https://www.swtestacademy.com
         continue-on-error: false
 
-      - name: Archive test results
-        uses: actions/upload-artifact@v2
+      - name: Upload artifacts
+        uses: astertom/nexus-upload-artifact@v1.1.0
         with:
           name: test-results
           path: target/surefire-reports
