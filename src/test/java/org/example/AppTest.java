@@ -64,6 +64,7 @@ public class AppTest{
         Assert.assertTrue(title.contains("Academy"));
     }
 
+    //Edit
     @AfterMethod
     public void teardownTest (){
         System.out.println("@AfterMethod has started.");
