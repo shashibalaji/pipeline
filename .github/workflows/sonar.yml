@@ -2,25 +2,37 @@ name: SonarCloud Analysis
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'zulu' # Alternative distribution options are available.
 
-      - name: SonarQube Annalysis
+      # Analysis runs only once SONAR_TOKEN (secret) and SONAR_ORGANIZATION / SONAR_PROJECT_KEY
+      # (repository variables) are configured, so forks and unconfigured clones don't fail.
+      - name: SonarQube Analysis
+        if: env.SONAR_TOKEN != '' && vars.SONAR_PROJECT_KEY != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=canberkudemy_udemycourse -Dbrowser=Chrome -Durl=https://www.swtestacademy.com
+        run: >
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+          -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+          -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+          -Dbrowser=Chrome -Durl=https://www.swtestacademy.com
+
+      - name: Build and test (Sonar not configured)
+        if: env.SONAR_TOKEN == '' || vars.SONAR_PROJECT_KEY == ''
+        run: mvn -B verify -Dbrowser=Chrome -Durl=https://www.swtestacademy.com

@@ -31,24 +31,26 @@ public class AppTest{
         browser = System.getProperty("browser");
         testURL = System.getProperty("url");
 
-        System.out.println("TestiniumKey is"+testiniumKey);
         //Print console that code is in @BeforeMethod!
         System.out.println("@BeforeMethod has started.");
 
-        if(browser.contains("Chrome")){
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless=new");
-            driver = new ChromeDriver(options);
-        }else if (browser.contains("FireFox")) {
-            FirefoxOptions options = new FirefoxOptions();
-            options.addArguments("--headless");
-            driver = new FirefoxDriver(options);
-        }else if (browser.contains("CloudChrome")){
+        // CloudChrome must be checked before Chrome, since "CloudChrome" also contains "Chrome"
+        if (browser.equalsIgnoreCase("CloudChrome")) {
             MutableCapabilities capabilities = new MutableCapabilities();
             capabilities.setCapability("browserName", "Chrome");
             capabilities.setCapability("version", "latest");
             capabilities.setCapability("key", testiniumKey);
             driver = new RemoteWebDriver(new URL("http://hub.testinium.io/wd/hub"), capabilities);
+        } else if (browser.equalsIgnoreCase("Chrome")) {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless=new");
+            driver = new ChromeDriver(options);
+        } else if (browser.equalsIgnoreCase("Firefox")) {
+            FirefoxOptions options = new FirefoxOptions();
+            options.addArguments("--headless");
+            driver = new FirefoxDriver(options);
+        } else {
+            throw new IllegalArgumentException("Unsupported browser: " + browser);
         }
     }
     //-----------------------------------Tests-----------------------------------
@@ -67,6 +69,8 @@ public class AppTest{
     @AfterMethod
     public void teardownTest (){
         System.out.println("@AfterMethod has started.");
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
