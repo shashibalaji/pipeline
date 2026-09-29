@@ -18,12 +18,12 @@ Surefire reports are uploaded as build artifacts on every run.
 
 ## The test
 
-`AppTest` reads `browser` and `url` from system properties, so one test runs headless Chrome, headless Firefox or a remote grid browser without code changes.
+`AppTest` reads `browser`, `url` and `expectedTitle` from system properties, so one test runs headless Chrome, headless Firefox or a remote grid browser without code changes.
 
 ## Run locally
 
 ```bash
-mvn -B clean test -Dbrowser=Chrome -Durl=https://www.swtestacademy.com
+mvn -B clean test -Dbrowser=Chrome -Durl=https://the-internet.herokuapp.com "-DexpectedTitle=The Internet"
 ```
 
 ## Tech

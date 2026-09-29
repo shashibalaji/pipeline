@@ -31,8 +31,8 @@ jobs:
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
           -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
           -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
-          -Dbrowser=Chrome -Durl=https://www.swtestacademy.com
+          -Dbrowser=Chrome -Durl=https://the-internet.herokuapp.com "-DexpectedTitle=The Internet"
 
       - name: Build and test (Sonar not configured)
         if: env.SONAR_TOKEN == '' || vars.SONAR_PROJECT_KEY == ''
-        run: mvn -B verify -Dbrowser=Chrome -Durl=https://www.swtestacademy.com
+        run: mvn -B verify -Dbrowser=Chrome -Durl=https://the-internet.herokuapp.com "-DexpectedTitle=The Internet"

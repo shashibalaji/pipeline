@@ -25,11 +25,13 @@ public class AppTest{
     public String testURL;//= "http://www.swtestacademy.com/";
     public String testiniumKey =  System.getenv("USERNAME") + ":"+ System.getenv("ACCESS_KEY") ;
     public String browser;
+    public String expectedTitle;
 
     @BeforeMethod
     public void setupTest () throws MalformedURLException {
         browser = System.getProperty("browser");
         testURL = System.getProperty("url");
+        expectedTitle = System.getProperty("expectedTitle", "Academy");
 
         //Print console that code is in @BeforeMethod!
         System.out.println("@BeforeMethod has started.");
@@ -57,13 +59,13 @@ public class AppTest{
     @Test
     public void firstTest () {
         System.out.println("First Test is Started.");
-        //Go to www.swtestacademy.com
+        //Go to the target URL
         driver.navigate().to(testURL);
         //Get page title
         String title = driver.getTitle();
         //Print page's title
         System.out.println("Page Title: " + title);
-        Assert.assertTrue(title.contains("Academy"));
+        Assert.assertTrue(title.contains(expectedTitle), "Page title '" + title + "' should contain '" + expectedTitle + "'");
     }
 
     @AfterMethod

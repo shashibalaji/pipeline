@@ -14,7 +14,11 @@ on:
       url:
         required: true
         description: What url will be used?
-        default: 'http://www.swtestacademy.com'
+        default: 'https://the-internet.herokuapp.com'
+      expectedTitle:
+        required: true
+        description: Text the page title must contain
+        default: 'The Internet'
 
 jobs:
   build-and-test:
@@ -29,7 +33,7 @@ jobs:
         uses: ./.github/reusableFlows/setup
 
       - name: Build and test with Maven
-        run: mvn -B clean test -Dbrowser=${{github.event.inputs.browser}} -Durl=${{github.event.inputs.url}}
+        run: mvn -B clean test -Dbrowser=${{github.event.inputs.browser}} -Durl=${{github.event.inputs.url}} "-DexpectedTitle=${{github.event.inputs.expectedTitle}}"
 
       - name: Archieve Reports
         uses: ./.github/reusableFlows/archieve

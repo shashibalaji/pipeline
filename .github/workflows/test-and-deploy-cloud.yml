@@ -14,7 +14,11 @@ on:
       url:
         required: true
         description: What url will be used?
-        default: 'http://www.swtestacademy.com'
+        default: 'https://the-internet.herokuapp.com'
+      expectedTitle:
+        required: true
+        description: Text the page title must contain
+        default: 'The Internet'
 
 jobs:
   build-and-test:
@@ -35,7 +39,7 @@ jobs:
         env:
           USERNAME: ${{ secrets.USERNAME }}
           ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
-        run: mvn -B clean test -Dbrowser=CloudChrome -Durl=${{github.event.inputs.url}}
+        run: mvn -B clean test -Dbrowser=CloudChrome -Durl=${{github.event.inputs.url}} "-DexpectedTitle=${{github.event.inputs.expectedTitle}}"
 
       - name: Archive test results
         uses: actions/upload-artifact@v4
